@@ -9,7 +9,7 @@ export default Base.setRouter([
     {
         path : '/login',
         router : login,
-        method : 'all'
+        method : 'get'
     },
     {
         path : '/register',

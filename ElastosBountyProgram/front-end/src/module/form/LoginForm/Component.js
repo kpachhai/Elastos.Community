@@ -40,17 +40,9 @@ class C extends BaseComponent {
                 type="password" placeholder="Password"/>
         );
 
-        const remember_fn = getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true
-        });
-        const remember_el = (
-            <Checkbox>Remember me</Checkbox>
-        );
         return {
             userName: userName_fn(userName_el),
-            pwd: pwd_fn(pwd_el),
-            remember: remember_fn(remember_el)
+            pwd: pwd_fn(pwd_el)
         };
     }
 
@@ -66,9 +58,7 @@ class C extends BaseComponent {
                     {p.pwd}
                 </FormItem>
                 <FormItem className="d_item">
-                    {p.remember}
                     <a className="login-form-forgot" href="">Forgot password</a>
-
                 </FormItem>
                 <FormItem>
                     <Button loading={this.props.loading} type="ebp" htmlType="submit" className="d_btn">

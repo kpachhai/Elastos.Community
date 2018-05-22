@@ -18,13 +18,14 @@ export default class extends Base {
 
         // validate
         this.validate_name(param.name);
-        const {name, parentCommunityId, type, leaderId} = param;
+        const {name, parentCommunityId, geolocation, type, leaderId} = param;
 
         const doc = {
-            name : name,
-            parentCommunityId : parentCommunityId,
-            type : type,
-            leaderId : leaderId,
+            name,
+            parentCommunityId,
+            geolocation,
+            type,
+            leaderId,
             createdBy : this.currentUser._id
         };
 
@@ -42,14 +43,15 @@ export default class extends Base {
 
         //validate
         this.validate_name(param.name);
-        const {communityId, name, parentCommunityId, type, leaderId} = param;
+        const {communityId, name, parentCommunityId, geolocation, type, leaderId} = param;
 
         const doc = {
             $set : {
-                name : name,
-                parentCommunityId : parentCommunityId,
-                type : type,
-                leaderId : leaderId
+                name,
+                parentCommunityId,
+                geolocation,
+                type,
+                leaderId
             }
         };
 
@@ -63,10 +65,10 @@ export default class extends Base {
      * @returns {Promise<"mongoose".Document>}
      */
     public async index(param): Promise<[Document]> {
-        const {skip, limit, query, sort} = param;
+        const {query} = param;
         const db_community = this.getDBModel('Community');
 
-        return await db_community.find(query).skip(skip).limit(limit).sort(sort);
+        return await db_community.find(query);
     }
 
     /**
@@ -96,12 +98,14 @@ export default class extends Base {
             userId: userId,
             communityId: communityId
         });
+
         if (tmp) {
             throw 'user is exist';
         }
 
         await db_user_community.save({
-            userId, communityId
+            userId,
+            communityId
         });
 
         return true;
@@ -118,8 +122,8 @@ export default class extends Base {
 
         const db_user_community = this.getDBModel('User_Community');
         const tmp = await db_user_community.findOne({
-            userId: userId,
-            communityId: communityId
+            userId,
+            communityId
         });
         if (!tmp) {
             throw 'user is not exist';
@@ -134,7 +138,7 @@ export default class extends Base {
     }
 
     public validate_name(name){
-        if(!validate.valid_string(name, 4)){
+        if(!validate.valid_string(name, 2)){
             throw 'invalid community name';
         }
     }

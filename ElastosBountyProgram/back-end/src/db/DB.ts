@@ -98,10 +98,12 @@ export default class {
     private async prepareRecord(){
         // create admin user
         const doc = {
-            username: `admin`,
-            password: 'admin_password',
+            username: 'admin@ebp.com',
+            password: 'd6e2bd6e06dae12c1126b29682080ea69273f680f167e6dcb4af241e514577aceca46eb088ede2e8822f3a0893e5cd98952d0a062f030c0ebc90310ab053478c',
+            salt: '27b12e6a843a3326051dcd184e3c436d',
             email: 'admin@ebp.com',
             role: 'ADMIN',
+            active: true,
             profile: {
                 firstName: 'Admin',
                 lastName: 'Ebp',
@@ -114,8 +116,13 @@ export default class {
         try{
             const rs = await this.db.User.save(doc);
             console.log('create admin user =>', rs);
-        }catch(e){
-            console.log('admin user is already exist');
+        }catch(err){
+            if(err.code === 11000){
+                console.log('admin user is already exist');
+            }
+            else{
+                console.error(err);
+            }
         }
     }
 }
